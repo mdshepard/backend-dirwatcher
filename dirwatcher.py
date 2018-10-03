@@ -2,7 +2,6 @@ import os
 import sys
 import time
 import argparse
-# import logging
 
 
 exit_flag = False
@@ -14,7 +13,7 @@ def find_magic_words(file_dict):
         if v is None:
             file_dict[k] = 0
     for key in file_dict.keys():
-        if file_dict[key] is not None:
+        if file_dict[key]:
             with open(key) as file:
                 for line in enumerate(file):
                     file_dict[key] += 1
@@ -49,24 +48,28 @@ def watch_directory(dir, ext, interval, magic):
                 print "file(s) has/have been removed from directory"
         current_dir_list = changed_dir_list
         for f in current_dir_list:
+            f = "./derdir" + "/" + f
             if f in file_dict:
                 pass
             else:
                 file_dict[f] = 0
-        file_dict = find_magic_words(file_dict)
+        find_magic_words(file_dict)
+        print "LOOK AT ME!"
         print file_dict
 
 
 def create_parser():
     parser = argparse.ArgumentParser(
-        description="Watches a directory of text files for a magic string")
+        description="Watches a directory of text files for a magic string"
+        )
 
     parser.add_argument(
         '-e', '--ext', type=str, default='.txt',
-        help="Text file extension to watch e.g. .txt .log")
+        help="Text file extension to watch e.g. .txt .log"
+        )
 
     parser.add_argument(
-        '-i', '--interval', type=int, default=2,
+        '-i', '--interval', type=int, default=3,
         help="How often the directory is to be watched in seconds."
     )
 
